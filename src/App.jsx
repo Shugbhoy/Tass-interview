@@ -1409,7 +1409,125 @@ function HomeModule({ setTab }) {
   );
 }
 
-// ─── Main App ─────────────────────────────────────────────────────────────────
+// ─── Module: AI Coach ─────────────────────────────────────────────────────────
+
+function CoachModule() {
+  const [messages, setMessages] = useState([{
+    role: "assistant",
+    content: "Hi — I'm your TASS Interview Coach.\n\nI can help you with:\n• Mock interview practice — tell me the role and I'll ask you real questions\n• Feedback on your Career Statement or STAR answers\n• Building your evidence bank from your real experiences\n• Handling nerves, blank moments or difficult questions\n• Responding vs replying — how to take control of the narrative\n\nWhat would you like to work on?"
+  }]);
+  const [input, setInput] = useState("");
+  const [loading, setLoading] = useState(false);
+  const bottomRef = useRef(null);
+
+  useEffect(() => { bottomRef.current?.scrollIntoView({ behavior: "smooth" }); }, [messages]);
+
+  const PROMPTS = [
+    "Run a mock interview for a council apprenticeship",
+    "Give feedback on my Career Statement",
+    "Help me build a STAR answer from my experience",
+    "I keep going blank — what do I do?",
+    "How do I answer 'what's your weakness?'",
+    "What questions should I ask at the end?"
+  ];
+
+  async function send() {
+    if (!input.trim() || loading) return;
+    const userMsg = input.trim();
+    setInput("");
+    const newMsgs = [...messages, { role: "user", content: userMsg }];
+    setMessages(newMsgs);
+    setLoading(true);
+    try {
+      const res = await fetch("/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          model: "claude-sonnet-4-20250514",
+          max_tokens: 1000,
+          system: `You are the TASS Perfect Interview Coach — a warm, direct and expert careers coach helping apprenticeship candidates (aged 16–29) across all sectors in Scotland prepare for interviews.
+
+Your approach:
+- Supportive but honest — you don't offer empty praise
+- Practical and specific — give concrete, actionable feedback
+- Expert in the STAR method (Situation, Task, Action, Result)
+- Familiar with Scottish Modern Apprenticeships and Graduate Apprenticeships
+- Aware of all sectors: engineering, local authority, health & care, digital/IT, construction, hospitality, retail, transport
+
+When running mock interviews:
+- Ask one question at a time
+- After each answer, give specific feedback: what worked, what to improve, then show an elite version
+- Push for specific examples — call out vague answers directly
+
+When reviewing Career Statements or STAR answers:
+- Be specific about what's strong and what needs work
+- Show improved versions with better language
+- Flag if answers are too vague, too casual, or lack evidence
+
+Key principles to reinforce:
+- Responding vs replying — use every question to frame skills and aspirations
+- 'I' not 'we' — interviewers assess individuals
+- Evidence over claims — every skill must be proven not just stated
+- The career statement is the frame for everything that follows
+
+Keep responses focused — use short paragraphs. Users may be on mobile.`,
+          messages: newMsgs.map(m => ({ role: m.role, content: m.content }))
+        })
+      });
+      const data = await res.json();
+      const reply = data.content?.[0]?.text || "Connection issue — please try again.";
+      setMessages([...newMsgs, { role: "assistant", content: reply }]);
+    } catch {
+      setMessages([...newMsgs, { role: "assistant", content: "Connection issue — please try again." }]);
+    }
+    setLoading(false);
+  }
+
+  return (
+    <div style={{ display: "flex", flexDirection: "column", height: "calc(100vh - 200px)", minHeight: 400 }}>
+      <div style={{ background: "#F0F8FF", borderLeft: `3px solid ${TEAL}`, borderRadius: 10, padding: "10px 14px", marginBottom: 12 }}>
+        <p style={{ color: "#2D5A8A", fontSize: 13, margin: 0 }}>💡 Try a mock interview, get STAR feedback, or paste your Career Statement for a review.</p>
+      </div>
+      <div style={{ display: "flex", gap: 6, marginBottom: 12, overflowX: "auto", paddingBottom: 4 }}>
+        {PROMPTS.map((p, i) => (
+          <button key={i} onClick={() => setInput(p)}
+            style={{ background: TEAL + "15", border: `1px solid ${TEAL}40`, color: TEAL, borderRadius: 99, padding: "5px 12px", whiteSpace: "nowrap", fontSize: 12, fontWeight: 600, cursor: "pointer", flexShrink: 0, fontFamily: "inherit" }}>
+            {p}
+          </button>
+        ))}
+      </div>
+      <div style={{ flex: 1, overflowY: "auto", display: "flex", flexDirection: "column", gap: 12, paddingRight: 4 }}>
+        {messages.map((m, i) => (
+          <div key={i} style={{ display: "flex", justifyContent: m.role === "user" ? "flex-end" : "flex-start" }}>
+            <div style={{ maxWidth: "85%", padding: "11px 15px", borderRadius: m.role === "user" ? "16px 16px 4px 16px" : "16px 16px 16px 4px", background: m.role === "user" ? NAVY : "#fff", color: m.role === "user" ? "#fff" : "#333", boxShadow: "0 2px 8px rgba(0,0,0,0.06)", fontSize: 14, lineHeight: 1.7, whiteSpace: "pre-wrap", border: m.role === "assistant" ? "1px solid #E2E8F0" : "none" }}>
+              {m.content}
+            </div>
+          </div>
+        ))}
+        {loading && (
+          <div style={{ display: "flex", justifyContent: "flex-start" }}>
+            <div style={{ background: "#fff", border: "1px solid #E2E8F0", borderRadius: "16px 16px 16px 4px", padding: "12px 16px", boxShadow: "0 2px 8px rgba(0,0,0,0.06)" }}>
+              <div style={{ display: "flex", gap: 4 }}>{[0,1,2].map(i => <div key={i} style={{ width: 7, height: 7, background: TEAL, borderRadius: 99, animation: `b 1.2s ${i*0.2}s infinite` }} />)}</div>
+            </div>
+          </div>
+        )}
+        <div ref={bottomRef} />
+      </div>
+      <div style={{ display: "flex", gap: 8, marginTop: 12 }}>
+        <textarea value={input} onChange={e => setInput(e.target.value)}
+          onKeyDown={e => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); send(); } }}
+          placeholder="Ask your coach anything, or paste your Career Statement / STAR answer for feedback…"
+          rows={2}
+          style={{ flex: 1, background: "#fff", border: "2px solid #E2E8F0", borderRadius: 12, padding: "11px 14px", color: "#333", fontSize: 14, fontFamily: "inherit", resize: "none", minHeight: 52, maxHeight: 120, boxSizing: "border-box" }} />
+        <button onClick={send} disabled={loading || !input.trim()}
+          style={{ background: input.trim() ? TEAL : "#E2E8F0", border: "none", color: input.trim() ? "#fff" : "#999", borderRadius: 12, padding: "0 18px", cursor: input.trim() ? "pointer" : "default", fontSize: 20 }}>↑</button>
+      </div>
+      <style>{`@keyframes b{0%,80%,100%{transform:translateY(0)}40%{transform:translateY(-5px)}}`}</style>
+    </div>
+  );
+}
+
+// ─── Home ─────────────────────────────────────────────────────────────────────
 
 export default function TASSInterview() {
   const [tab, setTab] = useState("home");
