@@ -1443,7 +1443,7 @@ function CoachModule() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          model: "claude-sonnet-4-20250514",
+          model: "claude-sonnet-4-5-20250929",
           max_tokens: 1000,
           system: `You are the TASS Perfect Interview Coach — a warm, direct and expert careers coach helping apprenticeship candidates (aged 16–29) across all sectors in Scotland prepare for interviews.
 
@@ -1475,10 +1475,10 @@ Keep responses focused — use short paragraphs. Users may be on mobile.`,
         })
       });
       const data = await res.json();
-      const reply = data.content?.[0]?.text || "Connection issue — please try again.";
+      const reply = data.content?.[0]?.text || `Error: ${error.message || "Connection issue — please try again."}`;
       setMessages([...newMsgs, { role: "assistant", content: reply }]);
     } catch {
-      setMessages([...newMsgs, { role: "assistant", content: "Connection issue — please try again." }]);
+      setMessages([...newMsgs, { role: "assistant", content: `Error: ${error.message || "Connection issue — please try again."}` }]);
     }
     setLoading(false);
   }
