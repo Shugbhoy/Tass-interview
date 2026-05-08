@@ -37,18 +37,20 @@ function TASSLogo({ size = "md", theme = "light" }) {
 
 // ─── Navigation ───────────────────────────────────────────────────────────────
 const TABS = [
-  { id: "home",       icon: "🏠", label: "Home" },
-  { id: "career",     icon: "🎯", label: "Career" },
-  { id: "star",       icon: "⭐", label: "STAR" },
-  { id: "questions",  icon: "❓", label: "Questions" },
-  { id: "respond",    icon: "🗣️", label: "Respond" },
-  { id: "formats",    icon: "🏢", label: "Formats" },
-  { id: "nerves",     icon: "🧠", label: "Nerves" },
-  { id: "askus",      icon: "💬", label: "Ask Them" },
-  { id: "roadmap",    icon: "🗓️", label: "Roadmap" },
-  { id: "edi",        icon: "🤝", label: "EDI" },
-  { id: "comms",      icon: "✉️", label: "Comms" },
-  { id: "coach",      icon: "🤖", label: "Coach" },
+  { id: "home",         icon: "🏠", label: "Home" },
+  { id: "golden",       icon: "🏅", label: "Golden Rules" },
+  { id: "career",       icon: "🎯", label: "Career" },
+  { id: "star",         icon: "⭐", label: "STAR" },
+  { id: "questions",    icon: "❓", label: "Questions" },
+  { id: "respond",      icon: "🗣️", label: "Respond" },
+  { id: "formats",      icon: "🏢", label: "Formats" },
+  { id: "presentation", icon: "📊", label: "Presentation" },
+  { id: "nerves",       icon: "🧠", label: "Nerves" },
+  { id: "askus",        icon: "💬", label: "Ask Them" },
+  { id: "roadmap",      icon: "🗓️", label: "Roadmap" },
+  { id: "edi",          icon: "🤝", label: "EDI" },
+  { id: "comms",        icon: "✉️", label: "Comms" },
+  { id: "coach",        icon: "🤖", label: "Coach" },
 ];
 
 // ─── Data ─────────────────────────────────────────────────────────────────────
@@ -1443,7 +1445,7 @@ function CoachModule() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          model: "claude-sonnet-4-5-20250929",
+          model: "claude-sonnet-4-20250514",
           max_tokens: 1000,
           system: `You are the TASS Perfect Interview Coach — a warm, direct and expert careers coach helping apprenticeship candidates (aged 16–29) across all sectors in Scotland prepare for interviews.
 
@@ -1475,10 +1477,10 @@ Keep responses focused — use short paragraphs. Users may be on mobile.`,
         })
       });
       const data = await res.json();
-      const reply = data.content?.[0]?.text || `Error: ${error.message || "Connection issue — please try again."}`;
+      const reply = data.content?.[0]?.text || "Connection issue — please try again.";
       setMessages([...newMsgs, { role: "assistant", content: reply }]);
     } catch {
-      setMessages([...newMsgs, { role: "assistant", content: `Error: ${error.message || "Connection issue — please try again."}` }]);
+      setMessages([...newMsgs, { role: "assistant", content: "Connection issue — please try again." }]);
     }
     setLoading(false);
   }
@@ -1529,6 +1531,231 @@ Keep responses focused — use short paragraphs. Users may be on mobile.`,
 
 // ─── Home ─────────────────────────────────────────────────────────────────────
 
+
+// ─── GOLDEN RULES MODULE ──────────────────────────────────────────────────────
+const GOLDEN_RULES = [
+  {id:"journey",icon:"🗺️",title:"Plan your journey in advance",priority:"CRITICAL",priorityCol:"#C0392B",
+   summary:"Know exactly how you are getting there, how long it takes and what can go wrong — before interview day.",
+   detail:"Arriving late to an interview is not recoverable. Even if you are let in, you will spend the first 10 minutes managing embarrassment and trying to settle your nerves rather than performing at your best.\n\nWhat to do:\n• Plan your route at least 2 days before the interview\n• Use Google Maps or Traveline Scotland (travelinescotland.com) at the time of day you will be travelling — not a generic journey time\n• Find the specific building entrance — many large organisations (NHS sites, council offices, Scottish Government buildings) have multiple entrances and the postcode alone will not get you to the right door\n• Check if there is a sign-in process — some organisations require you to be registered with security in advance\n• Plan for delays: if the journey normally takes 30 minutes, leave 60 minutes early",
+   tip:"If you have never been to the location before, travel there in advance. What looks straightforward on a map can be confusing in person — particularly on large hospital or government sites."},
+  {id:"dummyrun",icon:"🔁",title:"Do a dummy run",priority:"STRONGLY RECOMMENDED",priorityCol:"#F4A623",
+   summary:"Travel to the exact location before interview day. What looks simple on a map is often confusing in person.",
+   detail:"A dummy run removes one of the biggest sources of interview-day anxiety: uncertainty about the journey.\n\nWhen to do it:\n• The day before the interview, at a similar time of day\n• If the interview is early morning, do your dummy run at that time on a weekday — Sunday afternoon traffic and parking are completely different\n\nWhat to check:\n• Exactly where the building is — many office parks and hospital sites are confusing on foot\n• Where to park if driving — is it free? Does it require a permit?\n• Where the nearest bus stop or train station is relative to the entrance\n• How long the walk from transport to the entrance takes\n• Any planned roadworks or diversions\n\nFor video interviews:\n• Do a dummy run of the technology — test camera, microphone and internet connection at the same time of day\n• Check your background — what will the interviewer see behind you?\n• Have a fallback plan if technology fails — know the interviewer's phone number",
+   tip:"If you cannot do a physical dummy run, use Google Street View to familiarise yourself with the building and its surroundings."},
+  {id:"earlystart",icon:"⏰",title:"Research travel for early starts",priority:"IMPORTANT",priorityCol:"#B7860B",
+   summary:"Early morning interviews require specific travel planning — public transport and parking behave completely differently at 7:30am versus 10:00am.",
+   detail:"Many apprenticeship interviews start early — 8:00am, 8:30am or 9:00am. This is common in NHS, hospitality, engineering and contact centre roles.\n\nSpecific things to check:\n• Public transport timetables before 8:00am — many bus routes run less frequently in early morning\n• Whether car parks open before your arrival time — some do not open until 7:00am or 8:00am\n• If you are relying on someone else to drive you, confirm the night before — do not assume\n\nFor roles requiring regular early starts:\nIf you would need to start at 6:00am or 7:00am every day, consider honestly whether you can reliably manage that journey. The interview is testing exactly this.",
+   tip:"Build in contingency time at every stage: journey time x1.5, plus 15 minutes for arrival. You will sometimes arrive too early — that is a far better problem than arriving late."},
+  {id:"research",icon:"🔍",title:"Research the company thoroughly",priority:"CRITICAL",priorityCol:"#C0392B",
+   summary:"Know what the organisation does, why it matters and something specific that you cannot say about any other employer.",
+   detail:"Company research is one of the most heavily assessed elements of any interview. 'What do you know about us?' is not a formality — it is a genuine test of commitment and preparation.\n\nWhat to research before any interview:\n1. What does the organisation actually do? Describe it in one sentence.\n2. Who does it serve? Customers, patients, citizens, businesses?\n3. What are its values? Learn them and connect them to your own experience.\n4. What is happening right now? Any recent news, awards, expansions, challenges?\n5. What is specific about this employer that you could not say about its competitors?\n\nFor public sector specifically:\n• Scottish Government — which directorate? What does it do?\n• NHS — which health board? Which service area?\n• Council — which department? What services does it deliver?",
+   tip:"Write down five specific facts about the organisation before your interview. If you cannot write five facts, you have not done enough research."},
+  {id:"cv",icon:"📄",title:"Tailor your CV for every application",priority:"CRITICAL",priorityCol:"#C0392B",
+   summary:"A generic CV is immediately identifiable. Every application deserves a tailored personal profile and relevant emphasis.",
+   detail:"Sending the same CV to every employer is one of the most common and most costly mistakes apprenticeship candidates make.\n\nWhat tailoring means:\n1. Personal profile — name the specific employer and role. 'Seeking a Business Administration Apprenticeship with City of Edinburgh Council' not 'Seeking an apprenticeship in administration.'\n2. Relevant experience first — put your most relevant experience highest regardless of chronology\n3. Keyword matching — mirror the language from the job description\n4. Covering letter — always write a specific covering letter naming the organisation and something specific that attracted you\n5. Remove irrelevant content — keep only what is relevant to this specific application\n\nThe test: if you deleted your name, would this CV still be obviously written for this specific role? If yes — it is working. If it could belong to anyone — it is not tailored.",
+   tip:"Keep a master CV with everything on it. For each application create a copy, rename it with the employer name, and edit it to be specific. Never send the master version."},
+  {id:"devices",icon:"📵",title:"Switch off your phone and devices",priority:"NON-NEGOTIABLE",priorityCol:"#C0392B",
+   summary:"Your phone must be completely silent — not vibrate — before you enter the building. A ringing or vibrating phone during interview is very difficult to recover from.",
+   detail:"This seems obvious but it is surprisingly common — particularly for candidates who use their phone for navigation and forget to switch it off on arrival.\n\nWhen to switch off:\n• Before you enter the building — not in the waiting room\n• Switch off completely or use Airplane Mode — not silent, not vibrate. Vibration against a table or chair leg is audible and distracting.\n\nApple Watch and smartwatches:\n• Disable notifications on your smartwatch as well\n\nFor video interviews:\n• Switch off notifications on your computer — email popups, Slack, Teams\n• Close all unnecessary browser tabs and applications\n\nIf your phone does ring or vibrate:\n• Do not look at it\n• Apologise briefly: 'I am so sorry — I should have switched that off completely.'\n• Switch it off immediately and move on — prolonged apology makes it worse",
+   tip:"The night before your interview, add 'Switch phone off' to your mental checklist for the moment you walk through the door. Making it a deliberate action prevents forgetting."},
+  {id:"appearance",icon:"👔",title:"Dress appropriately for the sector",priority:"IMPORTANT",priorityCol:"#B7860B",
+   summary:"You cannot overdress for most apprenticeship interviews. When in doubt, dress more formally than you think is required.",
+   detail:"Appearance creates an immediate impression that is difficult to override. You do not need expensive clothes — you need clean, well-fitting, appropriate clothes.\n\nGeneral guidance:\n• Smart-casual at minimum for any interview\n• Business smart for professional sectors — financial services, legal, public sector, management\n• Never jeans, trainers or hoodies even if the organisation's culture is casual\n\nSector-specific:\n• Financial services and legal: conservative business dress\n• Public sector and NHS: smart business dress\n• Hospitality: smart-casual to business smart\n• Engineering: if there is a practical element, ask what to wear in advance\n\nThe night before: lay out everything you are going to wear — check for stains, missing buttons, creases.",
+   tip:"If unsure what to wear, look at the organisation's website and LinkedIn photos. The people in those photos show you the culture — dress slightly more formally than they appear."},
+  {id:"timing",icon:"⏱️",title:"Arrive at the right time",priority:"IMPORTANT",priorityCol:"#B7860B",
+   summary:"Arrive 10-15 minutes before your interview. Earlier can inconvenience the employer. Later causes anxiety for you.",
+   detail:"The ideal arrival time is 10-15 minutes before your scheduled interview.\n\nEarlier than 15 minutes:\n• Can create an awkward situation for busy reception staff and interviewers\n• If you arrive very early (30+ minutes), wait outside or in a nearby cafe\n\nThe waiting period:\n• Use it to compose yourself — not to cram more preparation\n• Observe the environment — it gives you insight into the culture\n• Be professional from the moment you walk through the door — reception interactions are sometimes noted\n\nIf you are going to be late:\n• Call ahead as soon as you know — do not wait and hope it resolves\n• Have the interviewer's phone number from the invitation email\n• Apologise briefly, give an estimated arrival time, then move forward when you arrive",
+   tip:"If something genuinely unavoidable happens, call immediately and ask if the interview can be rescheduled. Most employers will accommodate a genuine emergency communicated promptly and professionally."},
+  {id:"followup",icon:"📨",title:"Follow up after the interview",priority:"GOOD PRACTICE",priorityCol:"#1A9E8F",
+   summary:"A brief professional follow-up email the same day is good practice that most candidates do not do — and that many interviewers notice positively.",
+   detail:"Sending a follow-up email is not expected in most Scottish apprenticeship contexts — but it is noticed positively and demonstrates professional communication skills directly relevant to business administration, customer service and management roles.\n\nWhat to send:\n• A brief email — 4-6 sentences maximum\n• Same day or following morning\n• Thank them for their time\n• Reiterate enthusiasm for the role and organisation briefly\n\nSample:\n\nSubject: Thank you — [Role Title] Interview, [Date]\n\nDear [Name],\n\nThank you for taking the time to interview me today. I enjoyed learning more about [specific thing from the interview] and I remain very interested in the opportunity.\n\nI look forward to hearing from you.\n\nKind regards, [Your name]",
+   tip:"Keep the email to 4-6 sentences. Brevity signals professional communication skills. A long email with extensive self-promotion will create a negative impression."},
+  {id:"rejection",icon:"💪",title:"Handle rejection and learn from it",priority:"MINDSET",priorityCol:"#64748B",
+   summary:"Every rejection is information. Requesting feedback, processing it honestly and using it to improve is how successful candidates distinguish themselves.",
+   detail:"Most apprenticeship candidates apply multiple times before securing a place. Rejection is not a verdict on your worth — it is information about one application on one day.\n\nRequesting feedback:\n• Email within 5 working days\n• Sample: 'Thank you for letting me know. I would be grateful for any feedback that would help me improve for future opportunities.'\n\nProcessing feedback honestly:\n• Listen without defending yourself\n• Identify the specific, actionable elements\n• Write down 2-3 things to work on before your next application\n\nStrong candidates apply for their first-choice employer having practised at second and third-choice applications first. The interview anxiety and experience of STAR questions in a real setting improve with every application.",
+   tip:"Keep a simple log of every application: employer, role, date, outcome, feedback, what to improve. After 3-4 applications, patterns will emerge. Addressing those patterns is the fastest route to success."},
+];
+
+const CHECKLIST_PHASES = [
+  {phase:"1 week before",items:["Research the organisation — 5 specific facts minimum","Re-read the job description and identify the 3 most important requirements","Tailor your CV and covering letter to this specific role","Prepare and practise 3 STAR examples relevant to the role","Plan your route — not just look up the address but plan the actual journey"]},
+  {phase:"2 days before",items:["Do a dummy run of the journey if you have not been before","Check transport timetables for the time of day you will be travelling","Confirm parking arrangements if driving","Lay out your interview clothes — check for stains, creases, missing buttons","Check if there is anything specific you need to bring (ID, certificates)"]},
+  {phase:"Evening before",items:["Pack your bag — CV copies, ID, notepad, pen, any required documents","Set two alarms — not one","Prepare breakfast so the morning is calm","Review your 3 key STAR examples and research notes briefly","Get to bed at a reasonable time — fatigue significantly reduces interview performance"]},
+  {phase:"Morning of interview",items:["Eat breakfast — low blood sugar impairs focus","Allow significantly more time than you think you need","Arrive at the building 15 minutes early","Switch your phone completely off before entering the building","Take a slow breath before walking through the door"]},
+  {phase:"After the interview",items:["Send a brief follow-up email the same day or following morning","Note 2-3 things that went well and 2-3 things to improve while fresh","If rejected: request feedback professionally within 5 working days","Update your application log with outcome and key learnings"]},
+];
+
+function GoldenRulesModule() {
+  const [activeRule, setActiveRule] = React.useState(null);
+  const [checklistDone, setChecklistDone] = React.useState({});
+  const [view, setView] = React.useState("rules");
+
+  const totalItems = CHECKLIST_PHASES.reduce((a, c) => a + c.items.length, 0);
+  const doneCount = Object.values(checklistDone).filter(Boolean).length;
+
+  function toggleCheck(pi, ii) {
+    const key = `${pi}-${ii}`;
+    setChecklistDone(s => ({ ...s, [key]: !s[key] }));
+  }
+
+  return (
+    <div>
+      <div style={{ marginBottom: 22 }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 6 }}>
+          <span style={{ fontSize: 22 }}>🏅</span>
+          <h2 style={{ color: "#0D1B3E", fontSize: 20, fontWeight: 900, margin: 0 }}>Golden Rules</h2>
+        </div>
+        <div style={{ height: 3, width: 40, background: "#F4A623", borderRadius: 2, marginBottom: 8 }} />
+        <p style={{ color: "#64748B", fontSize: 13, lineHeight: 1.6, margin: 0 }}>The rules that separate prepared candidates from hopeful ones. None require talent. All require preparation.</p>
+      </div>
+
+      <div style={{ background: "#FFFBEB", borderLeft: "4px solid #F4A623", borderRadius: 8, padding: "10px 13px", marginBottom: 16 }}>
+        <p style={{ color: "#92400E", fontSize: 13, lineHeight: 1.65, margin: 0 }}>These rules apply to every apprenticeship interview in every sector at every level. The candidates who follow them consistently outperform candidates who rely on natural ability alone.</p>
+      </div>
+
+      <div style={{ display: "flex", gap: 8, marginBottom: 16 }}>
+        <button onClick={() => setView("rules")} style={{ flex: 1, padding: "10px 14px", background: view === "rules" ? "#0D1B3E" : "#fff", color: view === "rules" ? "#fff" : "#64748B", border: "1px solid #E2E8F0", borderRadius: 10, fontWeight: 700, fontSize: 12, cursor: "pointer", fontFamily: "inherit", textTransform: "uppercase" }}>10 Golden Rules</button>
+        <button onClick={() => setView("checklist")} style={{ flex: 1, padding: "10px 14px", background: view === "checklist" ? "#0D1B3E" : "#fff", color: view === "checklist" ? "#fff" : "#64748B", border: "1px solid #E2E8F0", borderRadius: 10, fontWeight: 700, fontSize: 12, cursor: "pointer", fontFamily: "inherit", textTransform: "uppercase" }}>
+          Readiness Checklist {doneCount > 0 ? `(${doneCount}/${totalItems})` : ""}
+        </button>
+      </div>
+
+      {view === "rules" && (
+        <div>
+          {GOLDEN_RULES.map((rule) => (
+            <div key={rule.id} style={{ background: "#fff", border: `2px solid ${activeRule === rule.id ? "#F4A623" : "#E2E8F0"}`, borderRadius: 14, overflow: "hidden", marginBottom: 12, boxShadow: "0 2px 8px rgba(0,0,0,0.06)" }}>
+              <button onClick={() => setActiveRule(activeRule === rule.id ? null : rule.id)} style={{ width: "100%", background: "none", border: "none", padding: "15px 16px", display: "flex", alignItems: "flex-start", gap: 14, cursor: "pointer", fontFamily: "inherit", textAlign: "left" }}>
+                <div style={{ width: 44, height: 44, background: "#0D1B3E", borderRadius: 10, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 22, flexShrink: 0 }}>{rule.icon}</div>
+                <div style={{ flex: 1 }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 3, flexWrap: "wrap" }}>
+                    <span style={{ color: "#0D1B3E", fontWeight: 800, fontSize: 14, lineHeight: 1.3 }}>{rule.title}</span>
+                    <span style={{ background: rule.priorityCol + "20", color: rule.priorityCol, fontSize: 9, fontWeight: 800, textTransform: "uppercase", letterSpacing: 0.5, padding: "2px 7px", borderRadius: 99 }}>{rule.priority}</span>
+                  </div>
+                  <p style={{ color: "#64748B", fontSize: 12, margin: 0, lineHeight: 1.4 }}>{rule.summary}</p>
+                </div>
+                <span style={{ color: "#F4A623", fontSize: 22, flexShrink: 0 }}>{activeRule === rule.id ? "−" : "+"}</span>
+              </button>
+              {activeRule === rule.id && (
+                <div style={{ borderTop: "1px solid #F0F4F8", padding: "0 16px 16px" }}>
+                  <div style={{ background: "#FAFBFC", borderRadius: 10, padding: 14, margin: "14px 0 12px" }}>
+                    <p style={{ color: "#333", fontSize: 13, lineHeight: 1.8, margin: 0, whiteSpace: "pre-line" }}>{rule.detail}</p>
+                  </div>
+                  <div style={{ background: "#FFFBEB", borderLeft: "3px solid #F4A623", borderRadius: 8, padding: "9px 12px" }}>
+                    <p style={{ color: "#92400E", fontSize: 13, lineHeight: 1.6, margin: 0 }}>💡 <strong>Pro tip:</strong> {rule.tip}</p>
+                  </div>
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      )}
+
+      {view === "checklist" && (
+        <div>
+          <div style={{ background: "#fff", border: "1px solid #E2E8F0", borderRadius: 12, padding: 16, marginBottom: 16, textAlign: "center" }}>
+            <p style={{ color: "#0D1B3E", fontWeight: 800, fontSize: 15, margin: "0 0 8px" }}>Interview Readiness</p>
+            <div style={{ height: 8, background: "#F0F4F8", borderRadius: 99, overflow: "hidden", marginBottom: 6 }}>
+              <div style={{ height: "100%", width: `${Math.round((doneCount / totalItems) * 100)}%`, background: doneCount === totalItems ? "#1A6B3A" : "#1A9E8F", borderRadius: 99, transition: "width 0.3s" }} />
+            </div>
+            <p style={{ color: "#64748B", fontSize: 13, margin: 0 }}>{doneCount} of {totalItems} items complete</p>
+            {doneCount === totalItems && <p style={{ color: "#1A6B3A", fontWeight: 700, fontSize: 14, margin: "8px 0 0" }}>You are interview-ready. Go get it. 🎯</p>}
+          </div>
+          {CHECKLIST_PHASES.map((phase, pi) => (
+            <div key={pi} style={{ marginBottom: 14 }}>
+              <p style={{ color: "#0D1B3E", fontWeight: 800, fontSize: 12, textTransform: "uppercase", letterSpacing: 0.5, margin: "0 0 8px", display: "flex", alignItems: "center", gap: 8 }}>
+                <span style={{ background: "#0D1B3E", color: "#fff", width: 22, height: 22, borderRadius: 6, display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: 11, fontWeight: 900 }}>{pi + 1}</span>
+                {phase.phase}
+              </p>
+              <div style={{ background: "#fff", border: "1px solid #E2E8F0", borderRadius: 12, overflow: "hidden" }}>
+                {phase.items.map((item, ii) => {
+                  const key = `${pi}-${ii}`;
+                  const done = checklistDone[key];
+                  return (
+                    <button key={ii} onClick={() => toggleCheck(pi, ii)} style={{ width: "100%", background: done ? "#F0FDF4" : "#fff", border: "none", borderBottom: ii < phase.items.length - 1 ? "1px solid #F0F4F8" : "none", padding: "12px 14px", display: "flex", alignItems: "center", gap: 12, cursor: "pointer", fontFamily: "inherit", textAlign: "left" }}>
+                      <div style={{ width: 22, height: 22, borderRadius: 6, border: `2px solid ${done ? "#1A6B3A" : "#CBD5E1"}`, background: done ? "#1A6B3A" : "#fff", flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                        {done && <span style={{ color: "#fff", fontSize: 13, fontWeight: 900 }}>✓</span>}
+                      </div>
+                      <span style={{ color: done ? "#166534" : "#444", fontSize: 13, lineHeight: 1.5, textDecoration: done ? "line-through" : "none", opacity: done ? 0.7 : 1 }}>{item}</span>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          ))}
+          {doneCount > 0 && (
+            <button onClick={() => setChecklistDone({})} style={{ width: "100%", padding: 12, background: "#fff", border: "1px solid #E2E8F0", color: "#64748B", borderRadius: 10, fontWeight: 600, fontSize: 13, cursor: "pointer", fontFamily: "inherit", marginTop: 4 }}>Reset checklist</button>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ─── PRESENTATION MODULE ──────────────────────────────────────────────────────
+function PresentationModule() {
+  const [section, setSection] = React.useState("overview");
+  const NAVY = "#0D1B3E", TEAL = "#1A9E8F", AMBER = "#F4A623", INDIGO = "#4338CA", WHITE = "#FFFFFF", MID = "#64748B";
+
+  const sections = {
+    overview: {
+      label: "Overview", items: [
+        { title: "Why presentations appear in interviews", body: "Many employers — particularly in public sector, financial services, management roles and graduate schemes — include a presentation task as part of their assessment. It tests how you structure and communicate ideas, how you perform under pressure, and how professionally you present yourself.\n\nPresentation tasks are most common in:\n• SCQF Level 6, 7 and 8 apprenticeship assessments\n• Assessment centres for larger employers (Scottish Government, NHS, financial services)\n• Management and supervisory roles\n• Graduate apprenticeship interviews\n• Any role involving client-facing communication\n\nYou will typically be told in advance — often 24-48 hours before, sometimes the same day. The topic is usually related to the role, a challenge facing the sector, or a question about yourself and your motivations.\n\nDuration: usually 5-10 minutes for the presentation, followed by 5-10 minutes of questions from the panel." },
+      ]
+    },
+    structure: {
+      label: "Structure", items: [
+        { title: "The five-part structure that always works", body: "Regardless of topic, the most effective presentation structure is:\n\n1. OPENING (30-60 seconds)\nState your name, the title and what you are going to cover. Signal the structure clearly: 'I am going to cover three things: the challenge, the opportunity, and my recommendation.'\nDo not start with 'Erm, so...' — start with a statement, a question or a striking fact.\n\n2. CONTEXT (1-2 minutes)\nSet up the situation. What is the background? Keep this brief — it is scene-setting, not the main event.\n\n3. MAIN CONTENT (3-5 minutes)\nCover 2-3 key points. No more than 3. For each point: state it clearly, provide evidence or an example, connect it back to the overall message.\n\n4. CONCLUSION (30-60 seconds)\nSummarise the 2-3 key points briefly. Do not introduce new information. End with a deliberate closing statement — not 'that's it' or 'I've finished'.\n\n5. QUESTIONS\nSay clearly: 'I am happy to take questions.' Treat questions as an opportunity, not a threat." },
+        { title: "How many slides — and what should be on them", body: "For a 5-10 minute presentation:\n• 4-6 slides maximum — one slide per minute as a rough guide\n• Title slide, 3-4 content slides, closing slide\n\nWhat goes on slides:\n• Headlines not sentences — each slide title should state the point\n• Bullet points should be fragments, not sentences — maximum 5 bullets, maximum 6 words per bullet\n• One idea per slide\n• Images only if they add meaning\n\nWhat does NOT go on slides:\n• Your entire script — never read directly from slides\n• Dense paragraphs of text\n• Gratuitous animations — they distract and often go wrong\n\nThe test: can someone understand the point of each slide in 3 seconds? If not, simplify." },
+      ]
+    },
+    delivery: {
+      label: "Delivery", items: [
+        { title: "What assessors actually watch", body: "Assessors evaluating a presentation look at:\n\nEye contact — are you talking to the panel or reading from notes? Good presenters use brief glances at notes but maintain eye contact most of the time. Include all panel members — not just the one who looks most encouraging.\n\nVoice — are you audible? Is your pace appropriate? Most nervous presenters speak too fast. If you feel like you are going too slowly, you are probably at the right pace.\n\nStructure — does the presentation flow logically? Signposting helps: 'Moving on to my second point...' 'To summarise...'\n\nHandling questions — do you listen carefully before answering? It is fine to take a moment. It is not fine to guess or bluff — 'I do not know the answer to that specifically, but I would approach it by...' is an honest and credible response.\n\nProfessional presentation — are you dressed appropriately? Is your manner confident and calm? Not fumbling with technology, not apologising excessively." },
+        { title: "Managing nerves — techniques that work", body: "Nervousness before a presentation is normal and can improve performance. These techniques work:\n\nPrepare more than you need to — the most reliable way to feel confident is to know your material so well that the slides are reminders, not scripts.\n\nPractise out loud — thinking through your presentation in your head is not the same as speaking it aloud. Practise standing up, speaking at full volume, at least twice. Time yourself.\n\nSlow your opening — the first 30 seconds are when nerves are highest. Deliberately slow your pace at the start.\n\nBreath control — before you start, take one slow breath. A slow exhalation activates the parasympathetic nervous system and reduces the physical sensation of anxiety.\n\nAccept that some nerves are visible — trying to hide all signs of nervousness increases anxiety. What assessors look for is whether you manage them professionally." },
+      ]
+    },
+    powerpoint: {
+      label: "PowerPoint", items: [
+        { title: "PowerPoint essentials — what you need to know", body: "Many assessment centre presentations will ask you to use PowerPoint. You need to be able to create and navigate a basic presentation confidently.\n\nEssential skills:\n• Create a new presentation from blank or use a provided template\n• Add, delete and reorder slides\n• Insert text boxes, bullet points, images and shapes\n• Apply consistent fonts and colours across slides\n• Use Slide Master to apply consistent formatting efficiently\n• Present in Slideshow mode — advance slides, return to previous, exit\n• Keyboard shortcuts: F5 (start slideshow), Escape (exit), B (blank screen)\n• Save as both .pptx and .pdf\n\nCommon mistakes to avoid:\n• Default Office theme with no customisation — shows minimal effort\n• Inconsistent fonts or sizes across slides\n• Text too small to read from 2 metres — minimum 24pt for body text\n• Forgetting to spellcheck every slide" },
+        { title: "Design principles — professional slides without being a designer", body: "Three principles make slides look professional:\n\n1. Contrast — text must be readable against its background. Dark text on light background or light text on dark background. Never grey text on white.\n\n2. Alignment — all text and objects should align to a consistent grid. Use PowerPoint's alignment tools (Arrange > Align) rather than placing by eye.\n\n3. Space — do not fill every inch of a slide. White space is not wasted — it makes content easier to read.\n\nColour guidance:\n• One primary colour (main accent) and one secondary colour\n• Dark navy or charcoal for headings on white background\n• Avoid bright red, lime green or bright orange — they look amateur\n\nFont guidance:\n• One font for headings, same or complementary font for body text\n• Minimum 28pt for slide titles, minimum 20pt for body text\n• Never more than two font families in one presentation" },
+        { title: "Build a practice presentation before the interview", body: "The best preparation is to actually build and deliver a practice presentation.\n\nSuggested practice brief:\n'Prepare a 6-minute presentation on why you are the right candidate for this apprenticeship. Structure it around three reasons, with specific evidence for each.'\n\nThis is excellent practice because:\n• It forces you to identify your three strongest selling points\n• It requires evidence-based arguments\n• The content (you and your motivations) is something you know thoroughly\n• 6 minutes is a realistic interview presentation length\n\nBuild the slides, practise delivering it aloud twice, time yourself, then review:\n• Did you stay within time?\n• Were your three points clear and distinct?\n• Did you have a strong opening and closing?\n\nIf you can confidently deliver this, you are prepared for almost any presentation brief an employer could give you." },
+      ]
+    },
+  };
+
+  const s = sections[section];
+
+  return (
+    <div>
+      <div style={{ marginBottom: 22 }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 6 }}>
+          <span style={{ fontSize: 22 }}>📊</span>
+          <h2 style={{ color: NAVY, fontSize: 20, fontWeight: 900, margin: 0 }}>Presentation Skills</h2>
+        </div>
+        <div style={{ height: 3, width: 40, background: AMBER, borderRadius: 2, marginBottom: 8 }} />
+        <p style={{ color: MID, fontSize: 13, lineHeight: 1.6, margin: 0 }}>How to prepare, structure and deliver a presentation at an assessment centre — including PowerPoint essentials.</p>
+      </div>
+
+      <div style={{ background: "#EEF2FF", borderLeft: "4px solid #4338CA", borderRadius: 8, padding: "10px 13px", marginBottom: 14 }}>
+        <p style={{ color: "#312E81", fontSize: 13, lineHeight: 1.65, margin: 0 }}>Presentations are increasingly common at Level 6, 7 and 8 assessments and in financial services, public sector and management roles. If given 24 hours notice — start immediately. Most candidates spend too long on slide design and not enough time practising delivery.</p>
+      </div>
+
+      <div style={{ display: "flex", flexWrap: "wrap", gap: 6, marginBottom: 14 }}>
+        {Object.entries(sections).map(([k, v]) => {
+          const isActive = section === k;
+          return <button key={k} onClick={() => setSection(k)} style={{ background: isActive ? NAVY : WHITE, color: isActive ? WHITE : MID, border: `1px solid ${isActive ? NAVY : "#E2E8F0"}`, borderRadius: 20, padding: "6px 12px", fontSize: 11, fontWeight: isActive ? 800 : 400, cursor: "pointer", fontFamily: "inherit", textTransform: "uppercase" }}>{v.label}</button>;
+        })}
+      </div>
+
+      {s.items.map((item, i) => (
+        <div key={i} style={{ background: WHITE, border: "1px solid #E2E8F0", borderRadius: 12, padding: 16, marginBottom: 12, boxShadow: "0 1px 4px rgba(0,0,0,0.04)" }}>
+          <p style={{ color: NAVY, fontWeight: 800, fontSize: 14, margin: "0 0 10px" }}>{item.title}</p>
+          <p style={{ color: "#444", fontSize: 13, lineHeight: 1.75, margin: 0, whiteSpace: "pre-line" }}>{item.body}</p>
+        </div>
+      ))}
+    </div>
+  );
+}
+
 export default function TASSInterview() {
   const [tab, setTab] = useState("home");
   const currentTab = TABS.find(t => t.id === tab);
@@ -1558,12 +1785,14 @@ export default function TASSInterview() {
         {tab === "questions" && <QuestionsModule />}
         {tab === "nerves"    && <NervesModule />}
         {tab === "askus"     && <AskUsModule />}
-        {tab === "formats"   && <FormatsModule />}
-        {tab === "roadmap"   && <RoadmapModule />}
-        {tab === "edi"       && <EDIModule />}
-        {tab === "comms"     && <CommsModule />}
-        {tab === "coach"     && <CoachModule />}
-        {tab === "sectors"   && <SectorsModule />}
+        {tab === "formats"      && <FormatsModule />}
+        {tab === "presentation" && <PresentationModule />}
+        {tab === "golden"       && <GoldenRulesModule />}
+        {tab === "roadmap"      && <RoadmapModule />}
+        {tab === "edi"          && <EDIModule />}
+        {tab === "comms"        && <CommsModule />}
+        {tab === "coach"        && <CoachModule />}
+        {tab === "sectors"      && <SectorsModule />}
       </div>
 
       {/* Bottom nav */}
