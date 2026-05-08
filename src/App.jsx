@@ -1360,17 +1360,19 @@ function AskUsModule() {
 
 function HomeModule({ setTab }) {
   const cards = [
-    { id: "career",    icon: "🎯", title: "Career Statement",      desc: "Build your 90-second opening before the first question is asked" },
-    { id: "respond",   icon: "🗣️", title: "Responding vs Replying", desc: "Take control of the narrative — don't just answer, respond" },
-    { id: "star",      icon: "⭐", title: "STAR Method",            desc: "5 worked examples — weak, good and elite — with coach commentary" },
-    { id: "questions", icon: "❓", title: "Interview Questions",    desc: "30 questions with three-tier model answers across 7 competency areas" },
-    { id: "nerves",    icon: "🧠", title: "Nerves & Blank Moments", desc: "6 practical techniques and what to say when your mind goes blank" },
-    { id: "askus",     icon: "💬", title: "Questions to Ask",       desc: "What to ask at the end — and what never to ask" },
-    { id: "formats",   icon: "🏢", title: "Interview Formats",      desc: "Competency, panel, video, assessment centre — know what you're facing" },
-    { id: "roadmap",   icon: "🗓️", title: "12-Week Roadmap",        desc: "Week-by-week preparation plan from research to interview day" },
-    { id: "edi",       icon: "🤝", title: "EDI & Your Rights",      desc: "Equality Act, reasonable adjustments, guaranteed interview schemes" },
-    { id: "comms",     icon: "✉️", title: "Professional Comms",     desc: "Templates for invitation replies, adjustment requests, thank-you emails" },
-    { id: "coach",     icon: "🤖", title: "AI Interview Coach",     desc: "Mock interviews, STAR feedback, Career Statement review" },
+    { id: "golden",       icon: "🏅", title: "Golden Rules",          desc: "10 rules that separate prepared candidates from hopeful ones — plus interactive readiness checklist" },
+    { id: "career",       icon: "🎯", title: "Career Statement",      desc: "Build your 90-second opening before the first question is asked" },
+    { id: "respond",      icon: "🗣️", title: "Responding vs Replying", desc: "Take control of the narrative — don't just answer, respond" },
+    { id: "star",         icon: "⭐", title: "STAR Method",            desc: "5 worked examples — weak, good and elite — with coach commentary" },
+    { id: "questions",    icon: "❓", title: "Interview Questions",    desc: "30 questions with three-tier model answers across 7 competency areas" },
+    { id: "nerves",       icon: "🧠", title: "Nerves & Blank Moments", desc: "6 practical techniques and what to say when your mind goes blank" },
+    { id: "askus",        icon: "💬", title: "Questions to Ask",       desc: "What to ask at the end — and what never to ask" },
+    { id: "formats",      icon: "🏢", title: "Interview Formats",      desc: "Competency, panel, video, assessment centre — know what you're facing" },
+    { id: "presentation", icon: "📊", title: "Presentation Skills",    desc: "Structure, delivery, PowerPoint essentials and a practice brief for assessment centres" },
+    { id: "roadmap",      icon: "🗓️", title: "12-Week Roadmap",        desc: "Week-by-week preparation plan from research to interview day" },
+    { id: "edi",          icon: "🤝", title: "EDI & Your Rights",      desc: "Equality Act, reasonable adjustments, guaranteed interview schemes" },
+    { id: "comms",        icon: "✉️", title: "Professional Comms",     desc: "Templates for invitation replies, adjustment requests, thank-you emails" },
+    { id: "coach",        icon: "🤖", title: "AI Interview Coach",     desc: "Mock interviews, STAR feedback, Career Statement review" },
   ];
 
   return (
