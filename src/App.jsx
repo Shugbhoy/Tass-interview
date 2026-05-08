@@ -1447,7 +1447,7 @@ function CoachModule() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          model: "claude-sonnet-4-20250514",
+          model: "claude-sonnet-4-5-20250929",
           max_tokens: 1000,
           system: `You are the TASS Perfect Interview Coach — a warm, direct and expert careers coach helping apprenticeship candidates (aged 16–29) across all sectors in Scotland prepare for interviews.
 
