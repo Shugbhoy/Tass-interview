@@ -1585,9 +1585,9 @@ const CHECKLIST_PHASES = [
 ];
 
 function GoldenRulesModule() {
-  const [activeRule, setActiveRule] = React.useState(null);
-  const [checklistDone, setChecklistDone] = React.useState({});
-  const [view, setView] = React.useState("rules");
+  const [activeRule, setActiveRule] = useState(null);
+  const [checklistDone, setChecklistDone] = useState({});
+  const [view, setView] = useState("rules");
 
   const totalItems = CHECKLIST_PHASES.reduce((a, c) => a + c.items.length, 0);
   const doneCount = Object.values(checklistDone).filter(Boolean).length;
@@ -1692,7 +1692,7 @@ function GoldenRulesModule() {
 
 // ─── PRESENTATION MODULE ──────────────────────────────────────────────────────
 function PresentationModule() {
-  const [section, setSection] = React.useState("overview");
+  const [section, setSection] = useState("overview");
   const NAVY = "#0D1B3E", TEAL = "#1A9E8F", AMBER = "#F4A623", INDIGO = "#4338CA", WHITE = "#FFFFFF", MID = "#64748B";
 
   const sections = {
