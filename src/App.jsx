@@ -1377,8 +1377,13 @@ function HomeModule({ setTab }) {
 
   return (
     <div>
-      <div style={{ display: "flex", justifyContent: "center", padding: "24px 0 20px" }}>
+      <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 12, padding: "24px 0 16px" }}>
         <TASSLogo size="lg" theme="light" />
+        <a href="https://theapprenticeshipsuccesssystem.co.uk"
+          style={{display:"flex",alignItems:"center",gap:6,textDecoration:"none",background:NAVY,border:"none",borderRadius:99,padding:"6px 16px"}}>
+          <span style={{fontSize:12}}>🏠</span>
+          <span style={{color:"#fff",fontSize:11,fontWeight:700,letterSpacing:"0.05em"}}>All Modules</span>
+        </a>
       </div>
 
       <div style={{ background: "#F0F8FF", borderRadius: 14, padding: "14px 16px", marginBottom: 20, borderLeft: `3px solid ${TEAL}` }}>
@@ -1771,6 +1776,11 @@ export default function TASSInterview() {
             <div style={{ color: "#fff", fontWeight: 700, fontSize: 14, lineHeight: 1 }}>The Perfect Interview</div>
             <div style={{ color: "rgba(255,255,255,0.5)", fontSize: 11, marginTop: 2 }}>{currentTab?.icon} {currentTab?.label}</div>
           </div>
+          <a href="https://theapprenticeshipsuccesssystem.co.uk" 
+            style={{display:"flex",flexDirection:"column",alignItems:"center",gap:2,textDecoration:"none",flexShrink:0,opacity:0.75,padding:"4px 6px",borderRadius:8,border:"1px solid rgba(255,255,255,0.15)"}}>
+            <span style={{fontSize:14}}>🏠</span>
+            <span style={{color:"rgba(255,255,255,0.8)",fontSize:8,fontWeight:700,textTransform:"uppercase",letterSpacing:0.5,whiteSpace:"nowrap"}}>All Modules</span>
+          </a>
         </div>
       )}
 
